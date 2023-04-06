@@ -9,10 +9,13 @@ import io.flutter.embedding.engine.FlutterEngineGroup
  * This holds onto our engine group.
  */
 class App : Application() {
+
     lateinit var engines: FlutterEngineGroup
+
 
     override fun onCreate() {
         super.onCreate()
         engines = FlutterEngineGroup(this)
+
     }
 }

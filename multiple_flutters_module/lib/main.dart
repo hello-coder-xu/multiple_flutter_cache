@@ -1,28 +1,51 @@
-// Copyright 2021 The Flutter team. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:multiple_flutters_module/page/first_page.dart';
+import 'package:multiple_flutters_module/page/im_page.dart';
+import 'package:multiple_flutters_module/page/second_page.dart';
 import 'package:url_launcher/url_launcher.dart' as launcher;
 
-void main() => runApp(const MyApp(color: Colors.blue));
+String get defaultRouteName => window.defaultRouteName;
+
+void main() {
+  runApp(const MyApp(
+    color: Colors.blue,
+    from: 'main',
+  ));
+}
 
 @pragma('vm:entry-point')
-void topMain() => runApp(const MyApp(color: Colors.green));
+void topMain() {
+  runApp(const MyApp(
+    color: Colors.green,
+    from: 'topMain',
+  ));
+}
 
 @pragma('vm:entry-point')
-void bottomMain() => runApp(const MyApp(color: Colors.purple));
+void bottomMain() {
+  runApp(const MyApp(
+    color: Colors.purple,
+    from: 'bottomMain',
+  ));
+}
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key, required this.color});
+  const MyApp({
+    super.key,
+    required this.color,
+    required this.from,
+  });
 
   final MaterialColor color;
+  final String from;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter测试demo',
       theme: ThemeData(
         colorSchemeSeed: color,
         useMaterial3: true,
@@ -32,15 +55,27 @@ class MyApp extends StatelessWidget {
           elevation: 8,
         ),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: getPage(),
     );
+  }
+
+  /// 获取页面
+  Widget getPage() {
+    print('test $from defaultRouteName=$defaultRouteName');
+    switch (defaultRouteName) {
+      case '/first':
+        return FirstPage();
+      case '/second':
+        return SecondPage();
+      case '/im':
+        return ImPage();
+      default:
+        return MyHomePage();
+    }
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
@@ -66,7 +101,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _incrementCounter() {
-    // Mutations to the data model are forwarded to the host platform.
     _channel.invokeMethod<void>("incrementCount", _counter);
   }
 
@@ -74,14 +108,14 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text('默认页面'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              'You have pushed the button this many times:',
+              '你已经按了这么多次按钮:',
             ),
             Text(
               '$_counter',
@@ -89,13 +123,13 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             TextButton(
               onPressed: _incrementCounter,
-              child: const Text('Add'),
+              child: const Text('数量增加'),
             ),
             TextButton(
               onPressed: () {
                 _channel.invokeMethod<void>("next", _counter);
               },
-              child: const Text('Next'),
+              child: const Text('下一个页面'),
             ),
             ElevatedButton(
               onPressed: () async {

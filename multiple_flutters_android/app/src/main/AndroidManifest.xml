@@ -18,25 +18,37 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MultipleFlutters">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".HomeActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--        <activity-->
+        <!--            android:name=".MainActivity"-->
+        <!--            android:exported="true">-->
+        <!--            <intent-filter>-->
+        <!--                <action android:name="android.intent.action.MAIN" />-->
+
+        <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+        <!--            </intent-filter>-->
+        <!--        </activity>-->
         <activity
             android:name=".SingleFlutterActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:exported="true"
             android:hardwareAccelerated="true"
-            android:windowSoftInputMode="adjustResize"
-            />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".DoubleFlutterActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:exported="true"
             android:hardwareAccelerated="true"
-            android:windowSoftInputMode="adjustResize"
-            />
+            android:windowSoftInputMode="adjustResize" />
         <!-- Whether leave or clean up the VM after the last shell shuts down. If your want to let
              your app destroy the last shell and re-create shells more quickly, set it to true,
              otherwise if you want to clean up the memory of the leak VM, set it to false.
@@ -44,8 +56,7 @@
              View https://github.com/flutter/flutter/issues/95903 for more detail. -->
         <meta-data
             android:name="io.flutter.embedding.android.LeakVM"
-            android:value="false"
-            />
+            android:value="false" />
     </application>
 
 </manifest>

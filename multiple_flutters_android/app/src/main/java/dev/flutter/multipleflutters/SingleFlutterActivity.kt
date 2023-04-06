@@ -7,27 +7,38 @@ import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 
 /**
- * This is an Activity that displays one instance of Flutter.
- *
- * EngineBindings is used to bridge communication between the Flutter instance and the DataModel.
+ * 单个flutter页面
  */
 class SingleFlutterActivity : FlutterActivity(), EngineBindingsDelegate {
-    private val engineBindings: EngineBindings by lazy {
-        EngineBindings(activity = this, delegate = this, entrypoint = "main")
-    }
+
+
+    private var engineBindings: EngineBindings? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        engineBindings.attach()
+        engineBindings?.attach()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        engineBindings.detach()
+        engineBindings?.detach()
     }
 
     override fun provideFlutterEngine(context: Context): FlutterEngine? {
-        return engineBindings.engine
+        return getEngineBindings().engine
+    }
+
+    private fun getEngineBindings(): EngineBindings {
+        if (engineBindings == null) {
+            val initialRoute = intent.getStringExtra("initialRoute")
+            engineBindings = EngineBindings(
+                context = this,
+                delegate = this,
+                entrypoint = "main",
+                initialRoute = initialRoute!!
+            )
+        }
+        return engineBindings!!
     }
 
     override fun onNext() {

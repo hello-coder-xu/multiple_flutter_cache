@@ -9,24 +9,22 @@ import androidx.fragment.app.FragmentManager
 import io.flutter.embedding.android.FlutterFragment
 import io.flutter.embedding.engine.FlutterEngineCache
 
-/**
- * An activity that displays 2 FlutterFragments vertically.
- */
+
 class DoubleFlutterActivity : FragmentActivity(), EngineBindingsDelegate {
     private val topBindings: EngineBindings by lazy {
-        EngineBindings(activity = this, delegate = this, entrypoint = "topMain")
+        EngineBindings(context = this, delegate = this, entrypoint = "topMain")
     }
     private val bottomBindings: EngineBindings by lazy {
-        EngineBindings(activity = this, delegate = this, entrypoint = "bottomMain")
+        EngineBindings(context = this, delegate = this, entrypoint = "bottomMain")
     }
     private val numberOfFlutters = 2
-    private val engineCountStart : Int
+    private val engineCountStart: Int = engineCounter
+
     private companion object {
         var engineCounter = 0
     }
 
     init {
-        engineCountStart = engineCounter
         engineCounter += numberOfFlutters
     }
 
@@ -61,10 +59,7 @@ class DoubleFlutterActivity : FragmentActivity(), EngineBindingsDelegate {
                 FlutterFragment.withCachedEngine(engineId.toString()).build<FlutterFragment>()
             fragmentManager
                 .beginTransaction()
-                .add(
-                        containerId,
-                        flutterFragment
-                )
+                .add(containerId, flutterFragment)
                 .commit()
         }
 
