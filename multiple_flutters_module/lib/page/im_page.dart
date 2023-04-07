@@ -58,7 +58,6 @@ class _ImPageState extends State<ImPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            cleanImageCache(),
             numberView(),
             ...img.map((e) {
               return CachedNetworkImage(
@@ -73,25 +72,7 @@ class _ImPageState extends State<ImPage> {
     );
   }
 
-  /// 清理图片缓存
-  Widget cleanImageCache() {
-    return GestureDetector(
-      onTap: () {
-        print('flutter im 图片清理');
-        PaintingBinding.instance.imageCache.clear();
-      },
-      child: Container(
-        width: 120,
-        height: 40,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
-          color: Colors.blue,
-        ),
-        child: Text('清理'),
-      ),
-    );
-  }
+
 
   /// 数量视图
   Widget numberView() {

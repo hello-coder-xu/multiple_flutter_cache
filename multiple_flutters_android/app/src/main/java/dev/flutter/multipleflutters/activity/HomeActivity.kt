@@ -1,24 +1,26 @@
-package dev.flutter.multipleflutters
+package dev.flutter.multipleflutters.activity
 
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
+import androidx.viewpager.widget.ViewPager
+import dev.flutter.multipleflutters.R
+import dev.flutter.multipleflutters.adapter.MyPagerAdapter
 import dev.flutter.multipleflutters.fragment.FirstFragment
 import dev.flutter.multipleflutters.fragment.ImFragment
 import dev.flutter.multipleflutters.fragment.SecondFragment
-import io.flutter.embedding.android.FlutterFragment
+import dev.flutter.multipleflutters.widget.NoScrollViewPager
+
 
 class HomeActivity : AppCompatActivity() {
     private var selectIndex = -1
+
+    private lateinit var viewPager: NoScrollViewPager
 
     private lateinit var first: TextView
     private lateinit var im: TextView
     private lateinit var second: TextView
 
-
-    /// fragment数组
-    private var fragmentList = arrayListOf<Fragment>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,12 +29,36 @@ class HomeActivity : AppCompatActivity() {
 
 
         initView()
-        initData()
         changeFragment(0)
     }
 
 
     private fun initView() {
+        viewPager = findViewById(R.id.view_pager)
+        val adapter = MyPagerAdapter(supportFragmentManager)
+        adapter.addFragment(FirstFragment(), "First")
+        adapter.addFragment(ImFragment(), "im")
+        adapter.addFragment(SecondFragment(), "Second")
+        viewPager.adapter = adapter
+        viewPager.offscreenPageLimit = 3
+        viewPager.isScrollable = false
+
+        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+            }
+
+            override fun onPageSelected(position: Int) {
+                changeBottom(position, updatePage = false)
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+        })
+
         first = findViewById(R.id.first)
         im = findViewById(R.id.im)
         second = findViewById(R.id.second)
@@ -48,15 +74,9 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun initData() {
-        fragmentList.add(FirstFragment())
-        fragmentList.add(ImFragment())
-        fragmentList.add(SecondFragment())
-    }
-
 
     /// 改变底部视图
-    private fun changeBottom(index: Int) {
+    private fun changeBottom(index: Int, updatePage: Boolean = true) {
         first.setBackgroundColor(0xffffff)
         im.setBackgroundColor(0xffffff)
         second.setBackgroundColor(0xffffff)
@@ -72,29 +92,14 @@ class HomeActivity : AppCompatActivity() {
             }
         }
         // 切换
-        changeFragment(index)
+        if (updatePage) {
+            changeFragment(index)
+        }
     }
 
     /// 选择哪个fragment显示
     private fun changeFragment(index: Int) {
-        println("test selectIndex=$selectIndex index=$index")
-        if (selectIndex != index) {
-            val transaction = supportFragmentManager.beginTransaction()
-//            if (selectIndex != -1) {
-//                transaction.hide(fragmentList[selectIndex])
-//            }
-            val currentFragment = fragmentList[index]
-//            if (!fragmentList[index].isAdded) {
-//                transaction.add(R.id.fragment, currentFragment)
-//            } else {
-//                transaction.show(currentFragment)
-//            }
-            transaction.replace(R.id.fragment, currentFragment)
-            transaction.commitNow()
-//            transaction.commitAllowingStateLoss()
-            selectIndex = index
-        }
+        selectIndex = index
+        viewPager.setCurrentItem(index, false)
     }
-
-
 }

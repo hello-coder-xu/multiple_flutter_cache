@@ -1,10 +1,13 @@
-package dev.flutter.multipleflutters
+package dev.flutter.multipleflutters.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import dev.flutter.multipleflutters.DataModel
+import dev.flutter.multipleflutters.DataModelObserver
+import dev.flutter.multipleflutters.R
 
 class MainActivity : AppCompatActivity(), DataModelObserver {
     private lateinit var countView: TextView

@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MultipleFlutters">
         <activity
-            android:name=".HomeActivity"
+            android:name=".activity.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,13 +38,13 @@
         <!--            </intent-filter>-->
         <!--        </activity>-->
         <activity
-            android:name=".SingleFlutterActivity"
+            android:name=".activity.SingleFlutterActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:exported="true"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".DoubleFlutterActivity"
+            android:name=".activity.DoubleFlutterActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:exported="true"
             android:hardwareAccelerated="true"

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import dev.flutter.multipleflutters.*
+import dev.flutter.multipleflutters.activity.SingleFlutterActivity
 
 class FirstFragment : Fragment(), DataModelObserver {
     private lateinit var countView: TextView

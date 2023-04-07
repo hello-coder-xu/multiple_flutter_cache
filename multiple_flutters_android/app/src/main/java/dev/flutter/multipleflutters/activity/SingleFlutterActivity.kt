@@ -1,8 +1,10 @@
-package dev.flutter.multipleflutters
+package dev.flutter.multipleflutters.activity
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import dev.flutter.multipleflutters.EngineBindings
+import dev.flutter.multipleflutters.EngineBindingsDelegate
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 
@@ -24,7 +26,7 @@ class SingleFlutterActivity : FlutterActivity(), EngineBindingsDelegate {
         engineBindings?.detach()
     }
 
-    override fun provideFlutterEngine(context: Context): FlutterEngine? {
+    override fun provideFlutterEngine(context: Context): FlutterEngine {
         return getEngineBindings().engine
     }
 

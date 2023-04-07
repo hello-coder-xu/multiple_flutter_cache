@@ -1,4 +1,4 @@
-package dev.flutter.multipleflutters
+package dev.flutter.multipleflutters.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,8 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
+import dev.flutter.multipleflutters.EngineBindings
+import dev.flutter.multipleflutters.EngineBindingsDelegate
 import io.flutter.embedding.android.FlutterFragment
 import io.flutter.embedding.engine.FlutterEngineCache
 

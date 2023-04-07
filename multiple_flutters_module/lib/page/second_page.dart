@@ -30,7 +30,7 @@ class _SecondPageState extends State<SecondPage> {
     _channel.setMethodCallHandler((call) async {
       if (call.method == "setCount") {
         _counter = call.arguments as int?;
-        print('flutter im页面 _counter=$_counter');
+        print('flutter 第二个 _counter=$_counter');
         setState(() {});
       } else {
         throw Exception('not implemented ${call.method}');
@@ -61,7 +61,6 @@ class _SecondPageState extends State<SecondPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              cleanImageCache(),
               numberView(),
               ...img.map((e) {
                 return CachedNetworkImage(
@@ -73,26 +72,6 @@ class _SecondPageState extends State<SecondPage> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  /// 清理图片缓存
-  Widget cleanImageCache() {
-    return GestureDetector(
-      onTap: () {
-        print('flutter 第二个 图片清理');
-        PaintingBinding.instance.imageCache.clear();
-      },
-      child: Container(
-        width: 120,
-        height: 40,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
-          color: Colors.blue,
-        ),
-        child: Text('清理'),
       ),
     );
   }

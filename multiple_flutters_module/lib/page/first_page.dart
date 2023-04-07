@@ -29,7 +29,7 @@ class _FirstPageState extends State<FirstPage> {
     _channel.setMethodCallHandler((call) async {
       if (call.method == "setCount") {
         _counter = call.arguments as int?;
-        print('flutter im页面 _counter=$_counter');
+        print('flutter 第一个 _counter=$_counter');
         setState(() {});
       } else {
         throw Exception('not implemented ${call.method}');
@@ -60,7 +60,6 @@ class _FirstPageState extends State<FirstPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              cleanImageCache(),
               numberView(),
               ...img.map((e) {
                 return CachedNetworkImage(
@@ -77,25 +76,7 @@ class _FirstPageState extends State<FirstPage> {
     );
   }
 
-  /// 清理图片缓存
-  Widget cleanImageCache() {
-    return GestureDetector(
-      onTap: () {
-        print('flutter 第一个 图片清理');
-        PaintingBinding.instance.imageCache.clear();
-      },
-      child: Container(
-        width: 120,
-        height: 40,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
-          color: Colors.blue,
-        ),
-        child: Text('清理'),
-      ),
-    );
-  }
+
 
   /// 数量视图
   Widget numberView() {

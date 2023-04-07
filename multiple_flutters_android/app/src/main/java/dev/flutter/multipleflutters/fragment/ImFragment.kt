@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import dev.flutter.multipleflutters.EngineBindings
 import dev.flutter.multipleflutters.EngineBindingsDelegate
-import dev.flutter.multipleflutters.MainActivity
+import dev.flutter.multipleflutters.activity.MainActivity
 import io.flutter.embedding.android.FlutterFragment
 import io.flutter.embedding.engine.FlutterEngine
 
@@ -29,10 +29,10 @@ class ImFragment : FlutterFragment(), EngineBindingsDelegate {
 
     override fun onDestroy() {
         super.onDestroy()
-//        engineBindings.detach()
+        engineBindings.detach()
     }
 
-    override fun provideFlutterEngine(context: Context): FlutterEngine? {
+    override fun provideFlutterEngine(context: Context): FlutterEngine {
         return engineBindings.engine
     }
 
