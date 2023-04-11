@@ -11,29 +11,34 @@ import io.flutter.embedding.engine.FlutterEngine
 
 class ImFragment : FlutterFragment(), EngineBindingsDelegate {
 
-    private val engineBindings: EngineBindings by lazy {
-        EngineBindings(
-            context = context,
-            delegate = this,
-            entrypoint = "main",
-            initialRoute = "/im"
-        )
-    }
-
+    private var engineBindings: EngineBindings? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        engineBindings.attach()
+        engineBindings?.attach()
     }
 
 
     override fun onDestroy() {
         super.onDestroy()
-        engineBindings.detach()
+        engineBindings?.detach()
+    }
+
+
+    private fun getEngineBindings(): EngineBindings {
+        if (engineBindings == null) {
+            engineBindings = EngineBindings(
+                context = context,
+                delegate = this,
+                entrypoint = "main",
+                initialRoute = "/im"
+            )
+        }
+        return engineBindings!!
     }
 
     override fun provideFlutterEngine(context: Context): FlutterEngine {
-        return engineBindings.engine
+        return getEngineBindings().engine
     }
 
     override fun onNext() {

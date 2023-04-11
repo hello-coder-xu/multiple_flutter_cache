@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:multiple_flutters_module/page/image_config.dart';
 
 /// 第二个页面
 class SecondPage extends StatefulWidget {
@@ -11,16 +12,15 @@ class SecondPage extends StatefulWidget {
 }
 
 class _SecondPageState extends State<SecondPage> {
-  List<String> img = [
-    'https://img2.debug.591.com.tw/house/2022/05/17/165276672790429100.jpeg!224x168.s2.jpeg',
-    'https://img1.debug.591.com.tw/house/2022/03/08/164673870690035401.jpg!224x168.s2.jpg',
-    'https://img2.debug.591.com.tw/house/2022/03/08/164673879498723905.jpg!224x168.s2.jpg',
-    'https://img2.debug.591.com.tw/house/2021/11/18/163722321043101907.jpg!224x168.s2.jpg',
-    'https://img2.debug.591.com.tw/house/2022/01/17/164241745963461004.jpg!224x168.s2.jpg',
-  ];
-
   int? _counter = 0;
   late MethodChannel _channel;
+
+  // 当前图片数据
+  List<Map<String, String>> get imgList {
+    List<Map<String, String>> temp = List.from(marineLifeArray);
+    temp.shuffle();
+    return temp.take(50).toList();
+  }
 
   @override
   void initState() {
@@ -55,22 +55,25 @@ class _SecondPageState extends State<SecondPage> {
         title: Text('第二个页面'),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          alignment: Alignment.topCenter,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              numberView(),
-              ...img.map((e) {
-                return CachedNetworkImage(
-                  width: 100,
-                  height: 100,
-                  imageUrl: e,
-                );
-              }).toList(),
-            ],
-          ),
+      body: Container(
+        alignment: Alignment.topCenter,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            numberView(),
+            Expanded(
+              child: ListView.builder(
+                itemBuilder: (context, index) {
+                  return CachedNetworkImage(
+                    width: double.infinity,
+                    height: 200,
+                    imageUrl: imgList[index]['photo']!,
+                  );
+                },
+                itemCount: imgList.length,
+              ),
+            ),
+          ],
         ),
       ),
     );

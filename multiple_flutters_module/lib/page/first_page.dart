@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/services.dart';
+import 'package:multiple_flutters_module/page/image_config.dart';
 
 /// 第一个页面
 class FirstPage extends StatefulWidget {
@@ -11,20 +12,37 @@ class FirstPage extends StatefulWidget {
 }
 
 class _FirstPageState extends State<FirstPage> {
-  List<String> img = [
-    'https://img2.debug.591.com.tw/house/2020/08/19/159780089982883808.jpg!660x495.water3.s2.jpg',
-    'https://img1.debug.591.com.tw/house/2020/11/05/160455568657854409.jpg!224x168.s2.jpg',
-    'https://img2.debug.591.com.tw/house/2022/03/08/164673868978349805.jpg!224x168.s2.jpg',
-    'https://img1.debug.591.com.tw/house/2022/03/08/164673867449756808.jpg!224x168.s2.jpg',
-  ];
-
   int? _counter = 0;
   late MethodChannel _channel;
+
+  // 当前图片数据
+  List<Map<String, String>> get imgList {
+    // List<Map<String, String>> temp = List.from(marineLifeArray);
+    // temp.shuffle();
+    // return temp.take(50).toList();
+    return marineLifeArray;
+  }
+
+  ImageCache get imageCache => PaintingBinding.instance.imageCache;
+
+  // 缓存图片数量
+  int get imageCacheCount => imageCache.currentSize;
+
+  // 缓存图片大小
+  int get imageCacheSizeBytes =>
+      PaintingBinding.instance.imageCache.currentSizeBytes;
+
+  // 缓存图片大小值(M)
+  String get imageCacheSizeBytesValue =>
+      '${imageCacheSizeBytes / 1024 / 1024}M';
 
   @override
   void initState() {
     print('flutter 第一个 initState');
     super.initState();
+    print('flutter 第一个 进入 缓存图片数量：$imageCacheCount');
+    print('flutter 第一个 进入 缓存图片大小：$imageCacheSizeBytes');
+    print('flutter 第一个 进入 缓存图片大小值：$imageCacheSizeBytesValue');
     _channel = const MethodChannel('multiple-flutters');
     _channel.setMethodCallHandler((call) async {
       if (call.method == "setCount") {
@@ -44,6 +62,11 @@ class _FirstPageState extends State<FirstPage> {
   @override
   void dispose() {
     print('flutter 第一个 dispose');
+    print('flutter 第一个 退出 缓存图片数量：$imageCacheCount');
+    print('flutter 第一个 退出 缓存图片大小：$imageCacheSizeBytes');
+    print('flutter 第一个 退出 缓存图片大小值：$imageCacheSizeBytesValue');
+    imageCache.clear();
+    imageCache.clearLiveImages();
     super.dispose();
   }
 
@@ -53,30 +76,39 @@ class _FirstPageState extends State<FirstPage> {
       appBar: AppBar(
         title: Text('第一个页面'),
         centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          alignment: Alignment.topCenter,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              numberView(),
-              ...img.map((e) {
-                return CachedNetworkImage(
-                  width: 100,
-                  height: 100,
-                  imageUrl: e,
-                );
-              }).toList(),
-
-            ],
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.arrow_back_outlined,
+            size: 24,
           ),
+        ),
+      ),
+      body: Container(
+        alignment: Alignment.topCenter,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            numberView(),
+            Expanded(
+              child: ListView.builder(
+                itemBuilder: (context, index) {
+                  return CachedNetworkImage(
+                    width: double.infinity,
+                    height: 200,
+                    imageUrl: imgList[index]['photo']!,
+                  );
+                },
+                itemCount: imgList.length,
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
-
-
 
   /// 数量视图
   Widget numberView() {
